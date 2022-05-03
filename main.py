@@ -12,12 +12,6 @@ mydb = mysql.connector.connect(
 )
 mycursor = mydb.cursor(dictionary=True)
 
-# mycursor.execute(
-#     f'''select count(*) from users
-#             where email="shivammane@gmail.com"''')
-# for i in mycursor:
-#     print(i["count(*)"])
-
 # get connection id
 
 
