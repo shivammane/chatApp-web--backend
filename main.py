@@ -18,6 +18,16 @@ mycursor = mydb.cursor(dictionary=True)
 # for i in mycursor:
 #     print(i["count(*)"])
 
+# get connection id
+
+
+def connectionId(id):
+    mycursor.execute(
+        f'''select connection_id from users
+            where userid={id}''')
+    result = mycursor.fetchall()
+    return result[0]['connection_id']
+
 
 app = Flask(__name__)
 CORS(app)
@@ -96,11 +106,13 @@ def handle_message(data):
 
 @socketio.on('messege')
 def handle_message(data):
-    if (data["receiverid"] != ''):
+    if (data["receiverid"] != '' and data["messege"] != '\n'):
         sql = '''INSERT INTO messeges (sender,messege,receiver) VALUES (%s,%s,%s)'''
         val = (data["userid"], data["messege"], data["receiverid"])
         mycursor.execute(sql, val)
         mydb.commit()
+        emit("receivemsg", json.dumps(data),
+             to=connectionId(data['receiverid']))
 
 
 if __name__ == '__main__':
