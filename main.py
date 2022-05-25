@@ -91,7 +91,7 @@ def messeges():
 
 
 @socketio.on('socketid')
-def handle_message(data):
+def handle_id(data):
     mycursor.execute(
         f'''UPDATE users SET connection_id = "{data["socketid"]}"
             where userid={data["userid"]}''')
